@@ -68,6 +68,12 @@ class BlackjackModel {
         deck.shuffle()
     }
     
+    // Utility function for getting deck count
+    // View controller uses it for displaying cards left
+    func getDeckCount()->Int {
+        return deck.count
+    }
+    
     // Utility function for translating integer number to card
     // type. 0 is A, 1 is 2, 2 is 3, ... , 10 is J, 11 is Q, 12
     // is K.
@@ -142,6 +148,36 @@ class BlackjackModel {
         }
         
         return (lowerVal, higherVal)
+    }
+    
+    // Perform all the steps needed for the beginning of the game.
+    // The return tuple is the four cards dealt needed for the view.
+    func startHands(playerBet: Double)->(String, String, String, String) {
+        // 1. Check if the deck needs to be reset
+        var size = getDeckCount()
+        if size < 10 {
+            deck = newDeck()
+        }
+        
+        // 2. Remove player bet from their total
+        playerMoney -= playerBet
+        
+        // 3. Deal the cards alternating between dealer/player
+        var playerFirst = draw()
+        var dealerFirst = draw()
+        var playerSecond = draw()
+        var dealerSecond = draw()
+        
+        // 4. Return the result tuple
+        return (playerFirst, dealerFirst, playerSecond, dealerSecond)
+    }
+    
+    // Perfrom a draw for a single card
+    func draw()->String {
+        var size = getDeckCount()
+        var card = deck[size-1]
+        deck.remove(at: size-1)
+        return card
     }
     
     // Clear the hands after a complete round
