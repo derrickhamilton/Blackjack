@@ -47,15 +47,15 @@ class BlackjackModel {
         deck = [String]()
         playerMoney = 500
         
-        deck = newDeck()
+        newDeck()
     }
     
     // Utility function for initializing a new deck
-    func newDeck()->[String] {
+    func newDeck() {
         // Fill the deck with 4 of each card
         for i in 0...12 {
             // Start by translating the int to card type
-            var temp = translate(cardNumber: i)
+            let temp = translate(cardNumber: i)
             
             // Now append four of each to the deck
             deck.append(temp)
@@ -154,19 +154,19 @@ class BlackjackModel {
     // The return tuple is the four cards dealt needed for the view.
     func startHands(playerBet: Int)->(String, String, String, String) {
         // 1. Check if the deck needs to be reset
-        var size = getDeckCount()
+        let size = getDeckCount()
         if size < 10 {
-            deck = newDeck()
+            newDeck()
         }
         
         // 2. Remove player bet from their total
         playerMoney -= playerBet
         
         // 3. Deal the cards alternating between dealer/player
-        var playerFirst = draw(playerId: 0)
-        var dealerFirst = draw(playerId: 1)
-        var playerSecond = draw(playerId: 0)
-        var dealerSecond = draw(playerId: 1)
+        let playerFirst = draw(playerId: 0)
+        let dealerFirst = draw(playerId: 1)
+        let playerSecond = draw(playerId: 0)
+        let dealerSecond = draw(playerId: 1)
         
         // 4. Return the result tuple
         return (playerFirst, dealerFirst, playerSecond, dealerSecond)
@@ -174,15 +174,15 @@ class BlackjackModel {
     
     // Perform a draw for a single card
     func draw(playerId: Int)->String {
-        var size = getDeckCount()
-        var card = deck[size-1]
+        let size = getDeckCount()
+        let card = deck[size-1]
         deck.remove(at: size-1)
         
         // Check which hand needs to be updated
         if playerId == 0 {
             playerHand.append(card)
         } else {
-            dealerhand.append(card)
+            dealerHand.append(card)
         }
         
         return card
@@ -191,8 +191,8 @@ class BlackjackModel {
     // Perform a draw with double your bet, required
     // to stand after
     func doubleDown(playerBet: Int)->String {
-        playerMoney -= playerbet
-        var card = draw(playerId: 0)
+        playerMoney -= playerBet
+        let card = draw(playerId: 0)
         return card
     }
     
