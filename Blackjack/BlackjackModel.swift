@@ -8,20 +8,64 @@
 
 import Foundation
 
+// I'm running Swift 4.1, so I need these extension methods for shuffling
+/* Credit: https://stackoverflow.com/questions/24026510/how-do-i-shuffle-an-array-in-swift/24029847 */
+
+extension MutableCollection {
+    /// Shuffles the contents of this collection.
+    mutating func shuffle() {
+        let c = count
+        guard c > 1 else { return }
+        
+        for (firstUnshuffled, unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
+            // Change `Int` in the next line to `IndexDistance` in < Swift 4.1
+            let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            let i = index(firstUnshuffled, offsetBy: d)
+            swapAt(firstUnshuffled, i)
+        }
+    }
+}
+
+extension Sequence {
+    /// Returns an array with the contents of this sequence, shuffled.
+    func shuffled() -> [Element] {
+        var result = Array(self)
+        result.shuffle()
+        return result
+    }
+}
+
 class BlackjackModel {
     var playerHand: [String]
     var dealerHand: [String]
-    var deck: [Int]
+    var deck: [String]
+    var playerMoney: Double
     
     init() {
         playerHand = [String]()
         dealerHand = [String]()
-        deck = [Int]()
+        deck = [String]()
+        playerMoney = 500.0
         
+        deck = newDeck()
+    }
+    
+    // Utility function for initializing a new deck
+    func newDeck()->[String] {
         // Fill the deck with 4 of each card
-        for _ in 0...12 {
-            deck.append(4)
+        for i in 0...12 {
+            // Start by translating the int to card type
+            var temp = translate(cardNumber: i)
+            
+            // Now append four of each to the deck
+            deck.append(temp)
+            deck.append(temp)
+            deck.append(temp)
+            deck.append(temp)
         }
+        
+        // Obviously, deck needs to be shuffled
+        deck.shuffle()
     }
     
     // Utility function for translating integer number to card
