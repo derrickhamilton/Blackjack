@@ -163,20 +163,28 @@ class BlackjackModel {
         playerMoney -= playerBet
         
         // 3. Deal the cards alternating between dealer/player
-        var playerFirst = draw()
-        var dealerFirst = draw()
-        var playerSecond = draw()
-        var dealerSecond = draw()
+        var playerFirst = draw(playerId: 0)
+        var dealerFirst = draw(playerId: 1)
+        var playerSecond = draw(playerId: 0)
+        var dealerSecond = draw(playerId: 1)
         
         // 4. Return the result tuple
         return (playerFirst, dealerFirst, playerSecond, dealerSecond)
     }
     
-    // Perfrom a draw for a single card
-    func draw()->String {
+    // Perform a draw for a single card
+    func draw(playerId: Int)->String {
         var size = getDeckCount()
         var card = deck[size-1]
         deck.remove(at: size-1)
+        
+        // Check which hand needs to be updated
+        if playerId == 0 {
+            playerHand.append(card)
+        } else {
+            dealerhand.append(card)
+        }
+        
         return card
     }
     
