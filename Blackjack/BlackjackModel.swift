@@ -39,13 +39,13 @@ class BlackjackModel {
     var playerHand: [String]
     var dealerHand: [String]
     var deck: [String]
-    var playerMoney: Double
+    var playerMoney: Int
     
     init() {
         playerHand = [String]()
         dealerHand = [String]()
         deck = [String]()
-        playerMoney = 500.0
+        playerMoney = 500
         
         deck = newDeck()
     }
@@ -152,7 +152,7 @@ class BlackjackModel {
     
     // Perform all the steps needed for the beginning of the game.
     // The return tuple is the four cards dealt needed for the view.
-    func startHands(playerBet: Double)->(String, String, String, String) {
+    func startHands(playerBet: Int)->(String, String, String, String) {
         // 1. Check if the deck needs to be reset
         var size = getDeckCount()
         if size < 10 {
@@ -185,6 +185,14 @@ class BlackjackModel {
             dealerhand.append(card)
         }
         
+        return card
+    }
+    
+    // Perform a draw with double your bet, required
+    // to stand after
+    func doubleDown(playerBet: Int)->String {
+        playerMoney -= playerbet
+        var card = draw(playerId: 0)
         return card
     }
     
