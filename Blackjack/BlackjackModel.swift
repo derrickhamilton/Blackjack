@@ -74,6 +74,11 @@ class BlackjackModel {
         return deck.count
     }
     
+    // Utility function for returning player's money
+    func getPlayerMoney()->Int {
+        return playerMoney
+    }
+    
     // Utility function for translating integer number to card
     // type. 0 is A, 1 is 2, 2 is 3, ... , 10 is J, 11 is Q, 12
     // is K.
